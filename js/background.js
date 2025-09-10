@@ -11400,7 +11400,7 @@
                                 try {
                                     console.log('=== TEXTURE LOADING FUNCTION CALLED ===');
                                     // Load and add page texture as background
-                                    const textureUrl = chrome && chrome.runtime ? chrome.runtime.getURL('page_texture.webp') : './page_texture.webp';
+                                    const textureUrl = chrome && chrome.runtime ? chrome.runtime.getURL('page_texture.jpg') : './page_texture.jpg';
                                     console.log('Loading texture from URL:', textureUrl);
                                     
                                     // Create a promise to load the texture
@@ -11458,10 +11458,11 @@
                                             const pattern = ctx.createPattern(tempCanvas, 'repeat');
                                             if (pattern) {
                                                 console.log('Pattern created successfully, applying texture');
-                                                ctx.globalAlpha = 0.4; // Make texture more visible
+                                                ctx.globalAlpha = 0.6; // Make texture more visible
                                                 ctx.fillStyle = pattern;
                                                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                                                 ctx.globalAlpha = 1.0; // Reset alpha
+                                                console.log('Texture pattern applied to canvas');
                                             } else {
                                                 console.error('Failed to create pattern from texture');
                                             }
@@ -21710,13 +21711,14 @@
                     ? (yr(t.urls)
                           .then((e) =>
                               pr(void 0, void 0, void 0, function* () {
-                                  var n;
-                                  const i = t.fileName,
-                                      a = t.title,
-                                      s = e[0].data,
-                                      o = e.map(({ data: t }) => t).slice(1),
-                                      u = t.contents,
-                                      c = o.map((t, e) => ({ image: t, content: u[e] })).filter((t) => t.image && t.content),
+                                  try {
+                                      var n;
+                                      const i = t.fileName,
+                                          a = t.title,
+                                          s = e[0].data,
+                                          o = e.map(({ data: t }) => t).slice(1),
+                                          u = t.contents,
+                                          c = o.map((t, e) => ({ image: t, content: u[e] })).filter((t) => t.image && t.content);
                                       
                                   // ============================================
                                   // ACTUAL EXTENSION CODE STARTS HERE
@@ -21752,7 +21754,48 @@
                                       })(h));
                                   
                                   // Load page texture image
-                                  const textureUrl = chrome.runtime.getURL('page_texture.jpg');
+                                  try {
+                                      const textureUrl = chrome.runtime.getURL('page_texture.jpg');
+                                      
+                                      // Preload texture image for PDF generation - WAIT for it to complete
+                                      if (!globalThis.preloadedTexture) {
+                                          try {
+                                              // Use fetch to load the texture as a blob, then convert to data URL
+                                              const texturePromise = fetch(textureUrl)
+                                                  .then(response => {
+                                                      if (!response.ok) {
+                                                          throw new Error(`HTTP error! status: ${response.status}`);
+                                                      }
+                                                      return response.blob();
+                                                  })
+                                                  .then(blob => {
+                                                      return new Promise((resolve, reject) => {
+                                                          const reader = new FileReader();
+                                                          reader.onload = () => {
+                                                              globalThis.preloadedTexture = {
+                                                                  dataUrl: reader.result,
+                                                                  complete: true
+                                                              };
+                                                              resolve(reader.result);
+                                                          };
+                                                          reader.onerror = () => reject(new Error('Failed to read texture blob'));
+                                                          reader.readAsDataURL(blob);
+                                                      });
+                                                  })
+                                                  .catch(error => {
+                                                      console.error('Failed to preload texture for PDF generation:', error);
+                                                      throw error;
+                                                  });
+                                              
+                                              // Wait for texture to load before continuing
+                                              yield texturePromise;
+                                          } catch (error) {
+                                              console.error('Error creating texture preloader:', error);
+                                          }
+                                      }
+                                  } catch (error) {
+                                      console.error('Error in texture URL generation or preloading setup:', error);
+                                  }
                                   
                                   const l = 210,
                                       f = 148.5,
@@ -21808,10 +21851,20 @@
                                   
                                   // Add page texture as background
                                   try {
-                                      const img = new Image();
-                                      img.src = textureUrl;
-                                      h.addImage(img, 'JPEG', 5, 5, 287, 200);
+                                      // Add white background first to make rounded corners visible
+                                      h.setFillColor(255, 255, 255);
+                                      h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                      
+                                      // Try to use preloaded texture if available
+                                      if (globalThis.preloadedTexture && globalThis.preloadedTexture.complete) {
+                                          h.addImage(globalThis.preloadedTexture.dataUrl, 'JPEG', 5, 5, 287, 200);
+                                      } else {
+                                          // Add fallback background for now
+                                          h.setFillColor(248, 248, 248);
+                                          h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                      }
                                   } catch (error) {
+                                      console.error('Error loading texture:', error);
                                       h.setFillColor(248, 248, 248);
                                       h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
                                   }
@@ -21837,10 +21890,20 @@
                                           h.saveGraphicsState();
                                           h.roundedRect(5, 5, 287, 200, 8, 8, null).clip();
                                           try {
-                                              const img = new Image();
-                                              img.src = textureUrl;
-                                              h.addImage(img, 'JPEG', 5, 5, 287, 200);
+                                              // Add white background first to make rounded corners visible
+                                              h.setFillColor(255, 255, 255);
+                                              h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                              
+                                              // Try to use preloaded texture if available
+                                              if (globalThis.preloadedTexture && globalThis.preloadedTexture.complete) {
+                                                  h.addImage(globalThis.preloadedTexture.dataUrl, 'JPEG', 5, 5, 287, 200);
+                                              } else {
+                                                  // Add fallback background
+                                                  h.setFillColor(248, 248, 248);
+                                                  h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                              }
                                           } catch (error) {
+                                              console.error('Error loading texture (odd):', error);
                                               h.setFillColor(248, 248, 248);
                                               h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
                                           }
@@ -21880,10 +21943,20 @@
                                           h.saveGraphicsState();
                                           h.roundedRect(5, 5, 287, 200, 8, 8, null).clip();
                                           try {
-                                              const img = new Image();
-                                              img.src = textureUrl;
-                                              h.addImage(img, 'JPEG', 5, 5, 287, 200);
+                                              // Add white background first to make rounded corners visible
+                                              h.setFillColor(255, 255, 255);
+                                              h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                              
+                                              // Try to use preloaded texture if available
+                                              if (globalThis.preloadedTexture && globalThis.preloadedTexture.complete) {
+                                                  h.addImage(globalThis.preloadedTexture.dataUrl, 'JPEG', 5, 5, 287, 200);
+                                              } else {
+                                                  // Add fallback background
+                                                  h.setFillColor(248, 248, 248);
+                                                  h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
+                                              }
                                           } catch (error) {
+                                              console.error('Error loading texture (even):', error);
                                               h.setFillColor(248, 248, 248);
                                               h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
                                           }
@@ -21927,9 +22000,19 @@
                                           h.restoreGraphicsState();
                                       }
                                   });
-                                  const p = h.output("blob");
-                                  const m = yield vr(p);
-                                  chrome.downloads.download({ url: m, filename: i }), r({ success: !0 });
+                                  try {
+                                      const p = h.output("blob");
+                                      const m = yield vr(p);
+                                      chrome.downloads.download({ url: m, filename: i });
+                                      r({ success: !0 });
+                                  } catch (error) {
+                                      console.error('Error during PDF blob generation or download:', error);
+                                      r({ error: error.message });
+                                  }
+                                  } catch (error) {
+                                      console.error('Error in PDF generation process:', error);
+                                      r({ error: error.message });
+                                  }
                               })
                           )
                           .catch((t) => {

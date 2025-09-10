@@ -2,6 +2,8 @@
 
 A reverse-engineered Chrome extension based on the original Gemini Storybook Exporter, enhanced with additional features for better typography and visual presentation.
 
+![Screenshot](screenshot.jpeg)
+
 ## 🌟 Features
 
 ### Core Functionality

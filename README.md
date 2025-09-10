@@ -12,6 +12,7 @@ A reverse-engineered Chrome extension based on the original Gemini Storybook Exp
 - **Multi-language Support**: Available in English, Spanish, French, Japanese, Korean, Chinese (Simplified), and Chinese (Traditional)
 
 ### ✨ Enhanced Features (Added)
+- **📝 Word Wrapping**: Prevents last word from being split across two lines for better readability and professional appearance
 - **📄 Paper Texture**: Realistic paper texture background for authentic book-like appearance
 - **🎨 Drop Cap Styling**: Elegant drop caps for the first letter of paragraphs, enhancing readability
 - **🔤 Better Fonts**: Custom font integration with fallback to premium serif fonts (Times New Roman, Georgia, Garamond, Book Antiqua, Palatino)
@@ -64,6 +65,7 @@ A reverse-engineered Chrome extension based on the original Gemini Storybook Exp
 - **Page Shadows**: Subtle shadow effects for depth
 - **Rounded Edges**: Smooth rounded corners on page elements for modern, polished appearance
 - **Print Margins**: Optimized page margins (1 inch on all sides) ensuring proper print layout and professional document formatting
+- **Word Wrapping**: Prevents last word from being split across two lines for better readability and professional appearance
 - **Line Height**: Optimized at 1.7 for comfortable reading
 - **Letter Spacing**: Fine-tuned at 0.02em for better readability
 

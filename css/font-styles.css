@@ -1,0 +1,175 @@
+/* Font faces will be injected by font-loader.js for proper path resolution */
+
+/* Gemini Storybook font styles preservation */
+.gemini-video-generator-button {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.25px !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Override any conflicting font styles */
+.gemini-video-generator-button * {
+  font-family: inherit !important;
+}
+
+/* Ensure font is applied to spinner and text elements */
+.gemini-video-generator-button span {
+  font-family: inherit !important;
+}
+
+/* Simplified Story Text Styling */
+.story-text-enhanced {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  line-height: 1.7 !important;
+  margin: 1.2em 0 !important;
+  font-size: 18px !important;
+  color: #2c2c2c !important;
+  text-rendering: optimizeLegibility !important;
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+}
+
+.story-text-enhanced::first-letter {
+  font-size: 3.8em !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  margin-right: 0.1em !important;
+  margin-bottom: -0.1em !important;
+  float: left !important;
+  line-height: 0.8 !important;
+  padding-top: 0.05em !important;
+  font-family: 'Times New Roman', 'Georgia', 'Book Antiqua', serif !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+/* Enhanced paragraph styling for story content */
+.story-paragraph {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  line-height: 1.75 !important;
+  margin: 1.4em 0 !important;
+  font-size: 18px !important;
+  color: #2c2c2c !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+  text-align: justify !important;
+  text-justify: inter-word !important;
+}
+
+.story-paragraph::first-letter {
+  font-size: 4.2em !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  margin-right: 0.12em !important;
+  margin-bottom: -0.15em !important;
+  float: left !important;
+  line-height: 0.75 !important;
+  padding-top: 0.08em !important;
+  font-family: 'Times New Roman', 'Georgia', 'Book Antiqua', serif !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+/* Alternative enhanced text style */
+.story-text-fancy {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Global font application for all text elements */
+*, 
+*::before, 
+*::after,
+body, p, div, span, h1, h2, h3, h4, h5, h6, text, tspan,
+input, textarea, button, select, option {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* PDF and document-specific styles */
+.pdf-content, 
+.pdf-text, 
+.pdf-page,
+.page,
+.textLayer,
+.textLayerDiv,
+.text-layer,
+[role="document"] *,
+[class*="pdf"] *,
+[class*="page"] *,
+[class*="text"] *:not([class*="button"]),
+svg text,
+canvas + div,
+/* Chrome PDF viewer selectors */
+embed[type="application/pdf"],
+embed[type="application/pdf"] *,
+object[type="application/pdf"],
+object[type="application/pdf"] *,
+/* Firefox PDF.js viewer selectors */
+#viewer .page,
+#viewer .textLayer,
+#viewer .textLayerDiv,
+.pdfViewer .page,
+.pdfViewer .textLayer,
+.pdfViewer .textLayerDiv,
+/* Edge PDF viewer selectors */
+.ms-pdf-viewer *,
+/* Generic PDF viewers */
+iframe[src*="pdf"],
+iframe[src*="pdf"] *,
+/* Story content selectors */
+.story-text,
+.story-content,
+.story-and-actions-container *,
+storybook-text-page-content *,
+storybook-image-page-content *,
+[class*="story"] *,
+[data-testid*="story"] * {
+  font-family: 'GeminiFont', 'GeminiFontAlt', 'Times New Roman', 'Georgia', 'Garamond', 'Book Antiqua', 'Palatino', serif !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.05em !important;
+  line-height: 1.7 !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Enhanced drop caps for story content and PDF viewers */
+.story-text::first-letter,
+.story-content::first-letter,
+storybook-text-page-content p::first-letter,
+[class*="story"] p::first-letter,
+/* PDF viewer drop caps */
+.textLayer div::first-letter,
+.textLayerDiv::first-letter,
+#viewer .textLayer div::first-letter,
+.pdfViewer .textLayer div::first-letter,
+.pdf-content p::first-letter,
+[role="document"] p::first-letter,
+embed[type="application/pdf"] p::first-letter,
+object[type="application/pdf"] p::first-letter {
+  font-size: 4.2em !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  margin-right: 0.12em !important;
+  margin-bottom: -0.15em !important;
+  float: left !important;
+  line-height: 0.75 !important;
+  padding-top: 0.08em !important;
+  font-family: 'Times New Roman', 'Georgia', 'Book Antiqua', serif !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1) !important;
+}

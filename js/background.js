@@ -21806,43 +21806,36 @@
                                   const createSpineShadow = () => {
                                       const pageWidth = 297; // Full page width
                                       const pageCenter = pageWidth / 2; // Center of page
-                                      const gradientWidth = pageWidth * 0.10; // Cover 25% of page width (narrower)
+                                      const gradientWidth = pageWidth * 0.10; // Cover 10% of page width
+                                      const pageHeight = l; // Use consistent page height
                                       
-                                      try {
-                                          // Use layered approach with many more layers for ultra-smooth gradient
-                                          // Much lighter opacity values for consistent subtle effect
-                                          const layers = [];
-                                          for (let i = 0; i <= 40; i++) {
-                                              const widthRatio = 1.0 - (i / 40);
-                                              const opacity = 0.001 + (i / 40) * 0.012; // From 0.001 to 0.013 (much lighter)
-                                              layers.push({
-                                                  width: gradientWidth * widthRatio,
-                                                  opacity: opacity
-                                              });
-                                          }
+                                      // Save current graphics state to ensure clean application
+                                      h.saveGraphicsState();
+                                      
+                                      // Create symmetric gradient from center outward
+                                      const gradientSteps = 20; // Half the gradient (center to edge)
+                                      const maxOpacity = 0.015;
+                                      
+                                      // Create layers from center outward (symmetric)
+                                      for (let i = 0; i <= gradientSteps; i++) {
+                                          const distanceFromCenter = i / gradientSteps; // 0 to 1
+                                          const width = gradientWidth * (1 - distanceFromCenter); // Full width at center, 0 at edge
+                                          const opacity = maxOpacity * Math.pow(1 - distanceFromCenter, 0.05); // Gentle falloff from center
                                           
-                                          layers.forEach(layer => {
-                                              const layerStart = pageCenter - layer.width/2;
+                                          if (width > 0) {
+                                              const layerStart = pageCenter - width/2;
                                               
-                                              try {
-                                                  h.saveGraphicsState();
-                                                  
-                                                  // Create graphics state with opacity
-                                                  const gState = h.GState({ opacity: layer.opacity });
-                                                  h.setGState(gState);
-                                                  
-                                                  h.setFillColor(0, 0, 0);
-                                                  h.rect(layerStart, 0, layer.width, l, 'F');
-                                                  
-                                                  h.restoreGraphicsState();
-                                                  } catch (gStateError) {
-                                                      h.setFillColor(0, 0, 0, layer.opacity);
-                                                      h.rect(layerStart, 0, layer.width, l, 'F');
-                                                  }
-                                          });
-                                      } catch (error) {
-                                          // If gradient fails, don't apply any shadow
+                                              // Create graphics state with opacity for each layer
+                                              const gState = h.GState({ opacity: opacity });
+                                              h.setGState(gState);
+                                              
+                                              h.setFillColor(0, 0, 0);
+                                              h.rect(layerStart, 0, width, pageHeight, 'F');
+                                          }
                                       }
+                                      
+                                      // Restore graphics state
+                                      h.restoreGraphicsState();
                                   };
                                   
                                   // Add page background with texture and rounded corners
@@ -21870,7 +21863,7 @@
                                   }
                                   
                                   if (s && d && (h.addImage(s, "JPEG", 0, 0, f, l, void 0, "FAST"), h.addImage(d, "JPEG", f, 0, f, l, void 0, "FAST"), a)) {
-                                      // Add book spine shadow overlay AFTER images
+                                      // Add spine gradient after images to overlay them
                                       createSpineShadow();
                                       h.setFont("CustomFont"), h.setFontSize(24), h.setTextColor(255, 255, 255);
                                       const t = h.getTextWidth(a),
@@ -21909,7 +21902,7 @@
                                           }
                                           
                                           if ((t && h.addImage(t, "JPEG", 0, 0, f, l, void 0, "FAST"), e)) {
-                                              // Add book spine shadow overlay AFTER image
+                                              // Add spine gradient after image to overlay it
                                               createSpineShadow();
                                               h.setFont("CustomFont"), h.setFontSize(18), h.setTextColor(0, 0, 0);
                                               const t = 168.5,
@@ -21961,9 +21954,6 @@
                                               h.roundedRect(5, 5, 287, 200, 8, 8, 'F');
                                           }
                                           
-                                          // Add book spine shadow overlay
-                                          createSpineShadow();
-                                          
                                           if (e) {
                                               
                                               h.setFont("CustomFont"), h.setFontSize(18), h.setTextColor(0, 0, 0);
@@ -21994,7 +21984,7 @@
                                           }
                                           if (t) {
                                               h.addImage(t, "JPEG", f, 0, f, l, void 0, "FAST");
-                                              // Add book spine shadow overlay AFTER image
+                                              // Add spine gradient after image to overlay it
                                               createSpineShadow();
                                           }
                                           h.restoreGraphicsState();
